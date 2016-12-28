@@ -57,6 +57,11 @@
       <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.sangupta</groupId>
+      <artifactId>murmur</artifactId>
+      <version>1.0.0</version>
+    </dependency>
 
   </dependencies>
 

@@ -3,9 +3,12 @@ package com.hasher;
 import org.junit.Test;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import static com.hasher.TrafficHashSplitter.generateBucketFractions;
+import static com.hasher.TrafficHashSplitter.getBucketFromSessionId;
+import static com.hasher.TrafficHashSplitter.mapFractionsToThresholds;
 import static org.junit.Assert.assertArrayEquals;
 
 /**
@@ -32,7 +35,20 @@ public class TrafficHashSplitterTest {
         for (int ind = 0; ind < testStrings.length; ind++) {
             expectedBuckets[ind] = Integer.parseInt(expBucketsStr[ind]);
         }
+        System.out.println(Arrays.toString(hashResults));
         assertArrayEquals(expectedBuckets, hashResults);
+    }
+
+    @Test
+    public void random() throws Exception {
+        getBucketFromSessionId("akdjflakdfj", 75, new int[]{10,20,30,40});
+    }
+
+
+    @Test
+    public void testMapsFractionsToThresholds() throws Exception {
+        long[] thresholds = mapFractionsToThresholds(75, new double[]{0.1, 0.3, 0.6, 1});
+        assertArrayEquals(new long[]{322122547L, 966367641L, 1932735283L, 3221225472L}, thresholds);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -46,4 +62,5 @@ public class TrafficHashSplitterTest {
         int[] testBuckets = {10, 20, 30, 40};
         assertArrayEquals(new double[]{0.1, 0.3, 0.6, 1}, TrafficHashSplitter.generateBucketFractions(testBuckets), 0.001);
     }
+
 }
