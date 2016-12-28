@@ -1,8 +1,6 @@
 package com.hasher;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * TrafficHashSplitter
@@ -13,16 +11,26 @@ public class TrafficHashSplitter {
 
     public static int getBucketFromSessionId(String sessionId, int trafficAllocation, int[] bucketPercentages) {
 
-        List<Double> fractions = new ArrayList<>();
+        double[] fractions = generateBucketFractions(bucketPercentages);
 
-        for (int index = 0; index < bucketPercentages.length; index++) {
-            fractions.add(index > 0 ? (double) (bucketPercentages[index] + bucketPercentages[index - 1]) / 100
-                                    : (double) bucketPercentages[index] / 100);
-        }
-
-        List<Double> bucketMaxHashValues = fractions.stream().map(
-                (fraction) -> fraction * trafficAllocation * Integer.MAX_VALUE).collect(Collectors.toList());
+//        List<Double> bucketMaxHashValues = fractions.stream().map(
+//                (fraction) -> fraction * trafficAllocation * Integer.MAX_VALUE).collect(Collectors.toList());
 
         return 3;
+    }
+
+    public static double[] generateBucketFractions(int[] bucketPercentages) {
+        int sum = IntStream.of(bucketPercentages).sum();
+
+        if (sum != 100) {
+            throw new IllegalArgumentException("Bucket percentages should add to 100");
+        }
+
+        double[] fractions = new double[bucketPercentages.length];
+        for (int index = 0; index < bucketPercentages.length; index++) {
+            fractions[index] = index > 0 ? (double)bucketPercentages[index] / 100 + fractions[index - 1]
+                                         : (double) bucketPercentages[index] / 100;
+        }
+        return fractions;
     }
 }
