@@ -51,4 +51,41 @@ public class TrafficHashSplitterTest {
         assertArrayEquals(
                 new double[]{0.1, 0.3, 0.6, 1}, TrafficHashSplitter.generateBucketFractions(testBuckets), 0.001);
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetBucketWhenSessionIdNull() throws Exception {
+        TrafficHashSplitter.getBucketFromSessionId(null, TRAFFIC_ALLOCATION, BUCKET_PERCENTAGES);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetBucketWhenSessionIdEmpty() throws Exception {
+        TrafficHashSplitter.getBucketFromSessionId("", TRAFFIC_ALLOCATION, BUCKET_PERCENTAGES);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetBucketWhenSessionIdBlank() throws Exception {
+        TrafficHashSplitter.getBucketFromSessionId("   ", TRAFFIC_ALLOCATION, BUCKET_PERCENTAGES);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testMapFractionsToThresholdsTrafficAllocationGt100() throws Exception {
+        TrafficHashSplitter.mapFractionsToThresholds(110, new double[]{0.2, 0.3, 0.1, 0.4});
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testMapFractionsToThresholdsTrafficAllocationLt0() throws Exception {
+        TrafficHashSplitter.mapFractionsToThresholds(-20, new double[]{0.2, 0.3, 0.1, 0.4});
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetBucketWhenBucketPercentagesNull() throws Exception {
+        TrafficHashSplitter.getBucketFromSessionId("djfaldjflkdsj", TRAFFIC_ALLOCATION, null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetBucketFromIdWithEmptyBucketArray() throws Exception {
+        TrafficHashSplitter.getBucketFromSessionId("adaf", TRAFFIC_ALLOCATION, new int[]{});
+    }
+
+
 }
