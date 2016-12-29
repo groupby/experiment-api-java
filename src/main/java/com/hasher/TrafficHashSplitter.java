@@ -53,8 +53,8 @@ public class TrafficHashSplitter {
         double[] fractions = new double[bucketPercentages.length];
 
         for (int index = 0; index < bucketPercentages.length; index++) {
-            fractions[index] = index > 0 ? (double) bucketPercentages[index] / 100 + fractions[index - 1]
-                                         : (double) bucketPercentages[index] / 100;
+            fractions[index] = index > 0 ?  bucketPercentages[index] / 100.0 + fractions[index - 1]
+                                         :  bucketPercentages[index] / 100.0;
         }
 
         return fractions;

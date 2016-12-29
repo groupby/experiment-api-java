@@ -1,0 +1,22 @@
+#generated java files
+*.class
+*.jar
+*.gz
+*.sublime-project
+*.sublime-workspace
+*.tgz
+*.log
+*.tmp
+*.userprefs
+*.war
+*.zip
+*passwords.txt*
+node_modules
+target
+# generated intellij files
+.idea
+*.iml
+
+!.gitignore
+!.gitattributes
+!.gitmodules
