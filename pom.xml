@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>com.groupbyinc</groupId>
     <artifactId>parent-oss</artifactId>
     <version>8</version>
-    <relativePath />
+    <relativePath/>
   </parent>
 
-	<artifactId>experiment-api-java</artifactId>
+  <artifactId>experiment-api-java</artifactId>
   <version>1.0.0-SNAPSHOT</version>
 
   <packaging>jar</packaging>
@@ -31,7 +32,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.build.locale>en_US</project.build.locale>
     <repo.upload.retryAttempts>3</repo.upload.retryAttempts>
-    <log4j.properties />
+    <log4j.properties/>
 
     <!-- ### Versions -->
     <junit.version>4.12</junit.version>
@@ -65,6 +66,11 @@
       <groupId>com.sangupta</groupId>
       <artifactId>murmur</artifactId>
       <version>1.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.4</version>
     </dependency>
 
     <!-- ### Test -->
@@ -161,7 +167,7 @@
               <manifest>
                 <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                 <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-                <packageName />
+                <packageName/>
               </manifest>
               <manifestEntries>
                 <Jdk-Compatibility-Version>${project.build.jdkVersion}</Jdk-Compatibility-Version>
@@ -188,7 +194,7 @@
               <manifest>
                 <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                 <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-                <packageName />
+                <packageName/>
               </manifest>
               <manifestEntries>
                 <Jdk-Compatibility-Version>${project.build.jdkVersion}</Jdk-Compatibility-Version>
@@ -281,6 +287,11 @@
           <version>1.6.5</version>
         </plugin>
 
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-shade-plugin</artifactId>
+          <version>2.4.2</version>
+        </plugin>
       </plugins>
 
     </pluginManagement>
@@ -405,9 +416,66 @@
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <shadeTestJar>true</shadeTestJar>
+              <shadedArtifactAttached>true</shadedArtifactAttached>
+              <shadedClassifierName>uber</shadedClassifierName>
+              <createSourcesJar>true</createSourcesJar>
+              <createDependencyReducedPom>true</createDependencyReducedPom>
+              <dependencyReducedPomLocation>
+                ${project.build.directory}/${project.build.finalName}.pom
+              </dependencyReducedPomLocation>
+              <artifactSet>
+                <includes>
+                  <include>${project.groupId}:*</include>
+                </includes>
+              </artifactSet>
+              <filters>
+                <filter>
+                  <artifact>*:*</artifact>
+                  <!-- excludes for preventing OSGi bundles from complaining -->
+                  <excludes>
+                    <exclude>com/groupbyinc/common/apache/commons/logging/impl/Avalon*
+                    </exclude>
+                    <exclude>com/groupbyinc/common/apache/commons/logging/impl/LogKit*
+                    </exclude>
+                    <exclude>com/groupbyinc/common/apache/commons/logging/impl/Log4J*
+                    </exclude>
+                  </excludes>
+                </filter>
+                <filter>
+                  <artifact>${project.groupId}:${project.parent.artifactId}-common</artifact>
+                  <includes>
+                    <include>com/groupbyinc/**</include>
+                    <include>META-INF/commerce.tld</include>
+                  </includes>
+                </filter>
+              </filters>
+              <transformers>
+                <transformer
+                    implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <manifestEntries>
+                    <Archive-Type>Uber JAR</Archive-Type>
+                  </manifestEntries>
+                </transformer>
+              </transformers>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
-          <finalName>api-java-flux-${project.version}</finalName>
+          <finalName>experiment-api-java-${project.version}</finalName>
           <descriptors>
             <descriptor>${project.basedir}/bin.xml</descriptor>
           </descriptors>
@@ -448,7 +516,9 @@
                   <goal>release</goal>
                 </goals>
                 <configuration>
-                  <artifact>${project.build.directory}/${project.artifactId}-${project.version}-uber.jar</artifact>
+                  <artifact>
+                    ${project.build.directory}/${project.artifactId}-${project.version}-uber.jar
+                  </artifact>
                 </configuration>
               </execution>
             </executions>

@@ -1,6 +1,7 @@
-package com.hasher;
+package com.groupbyinc.hasher;
 
 import com.sangupta.murmur.Murmur3;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.stream.IntStream;
 
@@ -9,11 +10,11 @@ public class TrafficHashSplitter {
     private static final long MURMUR_SEED = 2321168210L;
     private static final long MAX_HASH_VALUE = (long) Math.floor(Math.pow(2, 32));
 
-    protected static int getBucketFromSessionId(String sessionId, int trafficAllocation, int[] bucketPercentages) {
+    public static int getBucketFromSessionId(String sessionId, int trafficAllocation, int[] bucketPercentages) {
 
         if (sessionId == null) {
             throw new IllegalArgumentException("Session id cannot be null");
-        } else if (sessionId.equals("") || sessionId.matches("^[\\s]*$")) {
+        } else if (StringUtils.isBlank(sessionId)) {
             throw new IllegalArgumentException("Session id cannot be empty or blank");
         }
 
@@ -41,7 +42,7 @@ public class TrafficHashSplitter {
     }
 
     protected static long[] mapFractionsToThresholds(int trafficAllocation, double[] fractions) {
-        if (trafficAllocation <= 0 || trafficAllocation >100){
+        if (trafficAllocation <= 0 || trafficAllocation > 100) {
             throw new IllegalArgumentException("Traffic allocation must be an integer between 1 and 100");
         }
 
@@ -64,8 +65,8 @@ public class TrafficHashSplitter {
         double[] fractions = new double[bucketPercentages.length];
 
         for (int index = 0; index < bucketPercentages.length; index++) {
-            fractions[index] = index > 0 ?  bucketPercentages[index] / 100.0 + fractions[index - 1]
-                                         :  bucketPercentages[index] / 100.0;
+            fractions[index] = index > 0 ? bucketPercentages[index] / 100.0 + fractions[index - 1]
+                                         : bucketPercentages[index] / 100.0;
         }
 
         return fractions;

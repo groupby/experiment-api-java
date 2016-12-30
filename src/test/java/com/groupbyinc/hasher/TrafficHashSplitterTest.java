@@ -1,12 +1,13 @@
-package com.hasher;
+package com.groupbyinc.hasher;
 
 import org.junit.Test;
 
 import java.io.File;
 import java.util.Scanner;
 
-import static com.hasher.TrafficHashSplitter.generateBucketFractions;
-import static com.hasher.TrafficHashSplitter.mapFractionsToThresholds;
+import static com.groupbyinc.hasher.TrafficHashSplitter.generateBucketFractions;
+import static com.groupbyinc.hasher.TrafficHashSplitter.getBucketFromSessionId;
+import static com.groupbyinc.hasher.TrafficHashSplitter.mapFractionsToThresholds;
 import static org.junit.Assert.assertArrayEquals;
 
 public class TrafficHashSplitterTest {
@@ -20,7 +21,7 @@ public class TrafficHashSplitterTest {
         int[] hashResults = new int[testStrings.length];
 
         for (int ind = 0; ind < testStrings.length; ind++) {
-            hashResults[ind] = TrafficHashSplitter.getBucketFromSessionId(
+            hashResults[ind] = getBucketFromSessionId(
                     testStrings[ind], TRAFFIC_ALLOCATION, BUCKET_PERCENTAGES);
         }
 
@@ -49,42 +50,42 @@ public class TrafficHashSplitterTest {
     public void testGenerateBucketsFractionsReturnsAsExpected() throws Exception {
         int[] testBuckets = {10, 20, 30, 40};
         assertArrayEquals(
-                new double[]{0.1, 0.3, 0.6, 1}, TrafficHashSplitter.generateBucketFractions(testBuckets), 0.001);
+                new double[]{0.1, 0.3, 0.6, 1}, generateBucketFractions(testBuckets), 0.001);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetBucketWhenSessionIdNull() throws Exception {
-        TrafficHashSplitter.getBucketFromSessionId(null, TRAFFIC_ALLOCATION, BUCKET_PERCENTAGES);
+        getBucketFromSessionId(null, TRAFFIC_ALLOCATION, BUCKET_PERCENTAGES);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetBucketWhenSessionIdEmpty() throws Exception {
-        TrafficHashSplitter.getBucketFromSessionId("", TRAFFIC_ALLOCATION, BUCKET_PERCENTAGES);
+        getBucketFromSessionId("", TRAFFIC_ALLOCATION, BUCKET_PERCENTAGES);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetBucketWhenSessionIdBlank() throws Exception {
-        TrafficHashSplitter.getBucketFromSessionId("   ", TRAFFIC_ALLOCATION, BUCKET_PERCENTAGES);
+        getBucketFromSessionId("   ", TRAFFIC_ALLOCATION, BUCKET_PERCENTAGES);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testMapFractionsToThresholdsTrafficAllocationGt100() throws Exception {
-        TrafficHashSplitter.mapFractionsToThresholds(110, new double[]{0.2, 0.3, 0.1, 0.4});
+        mapFractionsToThresholds(110, new double[]{0.2, 0.3, 0.1, 0.4});
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testMapFractionsToThresholdsTrafficAllocationLt0() throws Exception {
-        TrafficHashSplitter.mapFractionsToThresholds(-20, new double[]{0.2, 0.3, 0.1, 0.4});
+        mapFractionsToThresholds(-20, new double[]{0.2, 0.3, 0.1, 0.4});
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetBucketWhenBucketPercentagesNull() throws Exception {
-        TrafficHashSplitter.getBucketFromSessionId("djfaldjflkdsj", TRAFFIC_ALLOCATION, null);
+        getBucketFromSessionId("djfaldjflkdsj", TRAFFIC_ALLOCATION, null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetBucketFromIdWithEmptyBucketArray() throws Exception {
-        TrafficHashSplitter.getBucketFromSessionId("adaf", TRAFFIC_ALLOCATION, new int[]{});
+        getBucketFromSessionId("adaf", TRAFFIC_ALLOCATION, new int[]{});
     }
 
 
