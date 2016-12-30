@@ -13,7 +13,7 @@ public class TrafficHashSplitter {
 
         if (sessionId == null) {
             throw new IllegalArgumentException("Session id cannot be null");
-        } else if (sessionId.equals("") || sessionId.matches("^[\\s]*$")){
+        } else if (sessionId.equals("") || sessionId.matches("^[\\s]*$")) {
             throw new IllegalArgumentException("Session id cannot be empty or blank");
         }
 

@@ -35,6 +35,7 @@
 
     <!-- ### Versions -->
     <junit.version>4.12</junit.version>
+    <jackson.version>2.6.3</jackson.version>
 
     <!-- ### Test -->
     <test.runOrder>random</test.runOrder>
@@ -49,6 +50,22 @@
   </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>19.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>${jackson.version}</version>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.sangupta</groupId>
+      <artifactId>murmur</artifactId>
+      <version>1.0.0</version>
+    </dependency>
 
     <!-- ### Test -->
     <dependency>
@@ -57,12 +74,6 @@
       <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>com.sangupta</groupId>
-      <artifactId>murmur</artifactId>
-      <version>1.0.0</version>
-    </dependency>
-
   </dependencies>
 
   <build>
