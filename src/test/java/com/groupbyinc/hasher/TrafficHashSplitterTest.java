@@ -64,20 +64,4 @@ public class TrafficHashSplitterTest {
         int[] testBuckets = {10, 20, 30, 40};
         assertArrayEquals(new double[]{0.1, 0.3, 0.6, 1}, generateBucketFractions(testBuckets), 0.001);
     }
-
-
-
-
-
-//    @Test(expected = IllegalArgumentException.class)
-//    public void testMapFractionsToThresholdsTrafficAllocationGt100() throws Exception {
-//        mapFractionsToThresholds(110, new double[]{0.2, 0.3, 0.1, 0.4});
-//    }
-//
-//    @Test(expected = IllegalArgumentException.class)
-//    public void testMapFractionsToThresholdsTrafficAllocationLt0() throws Exception {
-//        mapFractionsToThresholds(-20, new double[]{0.2, 0.3, 0.1, 0.4});
-//    }
-
-
 }

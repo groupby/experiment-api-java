@@ -1,8 +1,10 @@
-package com.hasher;
+package com.groupbyinc.hasher;
 
-import com.groupbyinc.hasher.*;
-import com.groupbyinc.hasher.BucketConfiguration;
+import com.groupbyinc.common.jackson.Mappers;
 import org.junit.Test;
+
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 public class BucketConfigurationTest {
     private static final int TRAFFIC_ALLOCATION = 75;
@@ -37,4 +39,17 @@ public class BucketConfigurationTest {
     public void testMapFractionsToThresholdsTrafficAllocationlt0() throws Exception {
         new BucketConfiguration(BUCKET_PERCENTAGES, -10);
     }
+
+    @Test
+    public void testGenerateConfigFromJson() throws Exception {
+        BucketConfiguration configuration = Mappers.readValue("{\"bucketPercentages\": [10,20,30,40], \"trafficAllocation\" : 45}".getBytes(), BucketConfiguration.class, false).init();
+        assertArrayEquals(new int[]{10, 20, 30, 40}, configuration.getBucketPercentages());
+        assertEquals(45, configuration.getTrafficAllocation());
+    }
+
+    @Test(expected = ConfigurationException.class)
+    public void testGenerateFromJsonWithBadConfig() throws Exception {
+        Mappers.readValue("{\"bucketPercentages\": [30,20,30,40], \"trafficAllocation\" : 45}".getBytes(), BucketConfiguration.class, false).init();
+    }
+
 }
