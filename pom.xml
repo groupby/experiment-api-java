@@ -48,6 +48,8 @@
     <test.parallel>classesAndMethods</test.parallel>
     <test.unit.skipTests>true</test.unit.skipTests>
 
+    <!-- ### GroupBy Dependency Params -->
+    <groupbyinc.common.version>78</groupbyinc.common.version>
   </properties>
 
   <dependencies>
@@ -61,6 +63,11 @@
       <artifactId>jackson-core</artifactId>
       <version>${jackson.version}</version>
       <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.groupbyinc</groupId>
+      <artifactId>common-jackson-internal</artifactId>
+      <version>${groupbyinc.common.version}</version>
     </dependency>
     <dependency>
       <groupId>com.sangupta</groupId>

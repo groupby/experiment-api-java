@@ -1,12 +1,23 @@
 package com.groupbyinc.hasher;
 
+import com.groupbyinc.common.jackson.Mappers;
+
 import java.util.stream.IntStream;
 
 public class BucketConfiguration {
     private int[] bucketPercentages;
     private int trafficAllocation;
 
+
+    public BucketConfiguration(String jsonConfig){
+        Mappers.readValue(jsonConfig.getBytes(), BucketConfiguration.class, false);
+    }
+
     public BucketConfiguration(int[] percentages, int allocation) throws ConfigurationException {
+
+        if (percentages == null){
+            throw new ConfigurationException("Bucket percentages can not be null");
+        }
         if (IntStream.of(percentages).sum() != 100) {
             throw new ConfigurationException("Bucket percentages should add to 100");
         }
@@ -25,6 +36,7 @@ public class BucketConfiguration {
     public int getTrafficAllocation() {
         return trafficAllocation;
     }
+
 }
 
 
