@@ -36,7 +36,6 @@
 
     <!-- ### Versions -->
     <junit.version>4.12</junit.version>
-    <jackson.version>2.6.3</jackson.version>
 
     <!-- ### Test -->
     <test.runOrder>random</test.runOrder>
@@ -57,12 +56,6 @@
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <version>19.0</version>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-core</artifactId>
-      <version>${jackson.version}</version>
-      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.groupbyinc</groupId>
@@ -304,7 +297,17 @@
     </pluginManagement>
 
     <plugins>
-
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>com.groupbyinc.example.Driver</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
@@ -442,6 +445,8 @@
               <artifactSet>
                 <includes>
                   <include>${project.groupId}:*</include>
+                  <include>com.google.guava:*</include>
+                  <include>com.google.guava:*</include>
                 </includes>
               </artifactSet>
               <filters>
@@ -461,7 +466,6 @@
                   <artifact>${project.groupId}:${project.parent.artifactId}-common</artifact>
                   <includes>
                     <include>com/groupbyinc/**</include>
-                    <include>META-INF/commerce.tld</include>
                   </includes>
                 </filter>
               </filters>

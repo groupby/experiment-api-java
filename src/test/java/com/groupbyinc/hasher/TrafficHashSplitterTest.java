@@ -6,7 +6,7 @@ import java.io.File;
 import java.util.Scanner;
 
 import static com.groupbyinc.hasher.TrafficHashSplitter.generateBucketFractions;
-import static com.groupbyinc.hasher.TrafficHashSplitter.getBucketFromSessionId;
+import static com.groupbyinc.hasher.TrafficHashSplitter.getBucketFromString;
 import static com.groupbyinc.hasher.TrafficHashSplitter.mapFractionsToThresholds;
 import static org.junit.Assert.assertArrayEquals;
 
@@ -23,7 +23,7 @@ public class TrafficHashSplitterTest {
         for (int ind = 0; ind < testStrings.length; ind++) {
             BucketConfiguration configuration = new BucketConfiguration(BUCKET_PERCENTAGES, TRAFFIC_ALLOCATION);
 
-            hashResults[ind] = getBucketFromSessionId(testStrings[ind], configuration);
+            hashResults[ind] = getBucketFromString(testStrings[ind], configuration);
         }
 
         String[] expBucketsStr = new Scanner(new File("src/test/resources/expectedBuckets.csv")).nextLine().split(",");
@@ -41,22 +41,22 @@ public class TrafficHashSplitterTest {
         assertArrayEquals(new long[]{322122547L, 966367641L, 1932735283L, 3221225472L}, thresholds);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = ConfigurationException.class)
     public void testGetBucketWhenSessionIdNull() throws Exception {
         BucketConfiguration configuration = new BucketConfiguration(BUCKET_PERCENTAGES, TRAFFIC_ALLOCATION);
-        getBucketFromSessionId(null, configuration);
+        getBucketFromString(null, configuration);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = ConfigurationException.class)
     public void testGetBucketWhenSessionIdEmpty() throws Exception {
         BucketConfiguration configuration = new BucketConfiguration(BUCKET_PERCENTAGES, TRAFFIC_ALLOCATION);
-        getBucketFromSessionId("", configuration);
+        getBucketFromString("", configuration);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = ConfigurationException.class)
     public void testGetBucketWhenSessionIdBlank() throws Exception {
         BucketConfiguration configuration = new BucketConfiguration(BUCKET_PERCENTAGES, TRAFFIC_ALLOCATION);
-        getBucketFromSessionId("   ", configuration);
+        getBucketFromString("   ", configuration);
     }
 
     @Test
