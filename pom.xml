@@ -59,7 +59,7 @@
     </dependency>
     <dependency>
       <groupId>com.groupbyinc</groupId>
-      <artifactId>common-jackson-internal</artifactId>
+      <artifactId>common-jackson</artifactId>
       <version>${groupbyinc.common.version}</version>
     </dependency>
     <dependency>
@@ -163,33 +163,6 @@
           <version>2.6</version>
           <configuration>
             <forceCreation>true</forceCreation>
-            <archive>
-              <manifest>
-                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-                <packageName/>
-              </manifest>
-              <manifestEntries>
-                <Jdk-Compatibility-Version>${project.build.jdkVersion}</Jdk-Compatibility-Version>
-                <Maven-Version>${maven.version}</Maven-Version>
-                <Encoding>${project.build.sourceEncoding}</Encoding>
-                <Built-By>${project.organization.name}</Built-By>
-                <Created-By>${project.organization.name}</Created-By>
-                <Created-Date>${date.current}</Created-Date>
-                <Vendor>${project.organization.name}</Vendor>
-                <Vendor-Url>${project.organization.url}</Vendor-Url>
-                <Copyright>Copyright (c) ${date.current.year} ${project.organization.name}</Copyright>
-              </manifestEntries>
-            </archive>
-          </configuration>
-        </plugin>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-war-plugin</artifactId>
-          <version>2.6</version>
-          <configuration>
-            <failOnMissingWebXml>false</failOnMissingWebXml>
             <archive>
               <manifest>
                 <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
@@ -434,6 +407,20 @@
               <goal>shade</goal>
             </goals>
             <configuration>
+              <relocations>
+                <relocation>
+                  <pattern>com.google</pattern>
+                  <shadedPattern>com.groupbyinc</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>com.sangupta</pattern>
+                  <shadedPattern>com.groupbyinc</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.apache</pattern>
+                  <shadedPattern>com.groupbyinc</shadedPattern>
+                </relocation>
+              </relocations>
               <shadeTestJar>true</shadeTestJar>
               <shadedArtifactAttached>true</shadedArtifactAttached>
               <shadedClassifierName>uber</shadedClassifierName>
@@ -446,7 +433,9 @@
                 <includes>
                   <include>${project.groupId}:*</include>
                   <include>com.google.guava:*</include>
-                  <include>com.google.guava:*</include>
+                  <include>com.sangupta:*</include>
+                  <include>com.groupbyinc</include>
+                  <include>org.apache.commons:*</include>
                 </includes>
               </artifactSet>
               <filters>
