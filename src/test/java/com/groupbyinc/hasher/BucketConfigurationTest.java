@@ -52,7 +52,6 @@ public class BucketConfigurationTest {
         new BucketConfiguration(BUCKET_PERCENTAGES, 50, -1);
     }
 
-
     @Test(expected = ConfigurationException.class)
     public void testGenerateFromJsonWithBucketsOver100() throws Exception {
         Mappers.readValue("{\"bucketPercentages\": [30,20,30,40], \"trafficAllocation\" : 45}".getBytes(), BucketConfiguration.class, false).init();
@@ -75,5 +74,4 @@ public class BucketConfigurationTest {
         assertEquals(45, configuration.getTrafficAllocation());
         assertEquals(2, configuration.getTrafficAllocationOffset());
     }
-
 }
