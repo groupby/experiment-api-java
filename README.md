@@ -36,5 +36,6 @@ The Uber JAR must be used to ensure shaded dependencies are included correctly.
 #### Bucketing by Session ID
 
 ```java
-    int bucketId = TrafficHashSplitter.getBucketFromSessionId("sessionId", 50, new int[]{10, 30, 40, 20});   
+    BucketConfiguration configuration = new BucketConfiguration(new int[]{10, 30, 40, 20}, 50, 0);
+    int bucketId = TrafficHashSplitter.getBucketFromString("sessionId", configuration);   
 ```
