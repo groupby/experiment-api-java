@@ -6,8 +6,6 @@ public class BucketConfiguration {
     private int[] bucketPercentages = null;
     private int trafficAllocation = -1;
 
-
-
     private int trafficAllocationOffset = -1;
 
     public BucketConfiguration() throws ConfigurationException{
@@ -49,5 +47,3 @@ public class BucketConfiguration {
 
     public int getTrafficAllocationOffset() { return trafficAllocationOffset; }
 }
-
-

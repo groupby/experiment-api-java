@@ -11,6 +11,10 @@ public class TrafficHashSplitter {
 
   public static int getBucketFromString(String targetString, BucketConfiguration configuration) throws ConfigurationException {
 
+    if (configuration == null) {
+      throw new ConfigurationException("Bucket configuration cannot be null");
+    }
+
     int trafficAllocation = configuration.getTrafficAllocation();
     int trafficAllocationOffset = configuration.getTrafficAllocationOffset();
     int[] bucketPercentages = configuration.getBucketPercentages();

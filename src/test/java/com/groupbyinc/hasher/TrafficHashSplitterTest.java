@@ -100,19 +100,24 @@ public class TrafficHashSplitterTest {
   }
 
   @Test(expected = ConfigurationException.class)
-  public void testGetBucketWhenSessionIdNull() throws Exception {
+  public void testGetBucketWhenConfigurationNull() throws Exception {
+    getBucketFromString("testString", null);
+  }
+
+  @Test(expected = ConfigurationException.class)
+  public void testGetBucketWhenTargetStringNull() throws Exception {
     BucketConfiguration configuration = new BucketConfiguration(BUCKET_PERCENTAGES, TRAFFIC_ALLOCATION, NO_OFFSET);
     getBucketFromString(null, configuration);
   }
 
   @Test(expected = ConfigurationException.class)
-  public void testGetBucketWhenSessionIdEmpty() throws Exception {
+  public void testGetBucketWhenTargetStringEmpty() throws Exception {
     BucketConfiguration configuration = new BucketConfiguration(BUCKET_PERCENTAGES, TRAFFIC_ALLOCATION, NO_OFFSET);
     getBucketFromString("", configuration);
   }
 
   @Test(expected = ConfigurationException.class)
-  public void testGetBucketWhenSessionIdBlank() throws Exception {
+  public void testGetBucketWhenTargetStringBlank() throws Exception {
     BucketConfiguration configuration = new BucketConfiguration(BUCKET_PERCENTAGES, TRAFFIC_ALLOCATION, NO_OFFSET);
     getBucketFromString("   ", configuration);
   }
