@@ -44,7 +44,7 @@
     <test.threadLocal>true</test.threadLocal>
     <test.threadCount>4</test.threadCount>
     <test.parallel>classesAndMethods</test.parallel>
-    <test.unit.skipTests>true</test.unit.skipTests>
+    <test.unit.skipTests>false</test.unit.skipTests>
 
     <!-- ### GroupBy Dependency Params -->
     <groupbyinc.common.version>78</groupbyinc.common.version>
@@ -526,9 +526,9 @@
     </profile>
 
     <profile>
-      <id>unit</id>
+      <id>skipTests</id>
       <properties>
-        <test.unit.skipTests>false</test.unit.skipTests>
+        <test.unit.skipTests>true</test.unit.skipTests>
       </properties>
     </profile>
 
