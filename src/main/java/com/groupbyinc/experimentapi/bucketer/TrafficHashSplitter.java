@@ -16,15 +16,11 @@ public class TrafficHashSplitter {
     init();
   }
 
-  public static int getBucketFromString(String targetString, BucketConfiguration configuration) throws ConfigurationException {
+  public int getBucketId(String targetString) throws ConfigurationException {
 
-    if (configuration == null) {
-      throw new ConfigurationException("Bucket configuration cannot be null");
-    }
-
-    int trafficAllocation = configuration.getTrafficAllocation();
-    int trafficAllocationOffset = configuration.getTrafficAllocationOffset();
-    int[] bucketPercentages = configuration.getBucketPercentages();
+    int trafficAllocation = bucketConfiguration.getTrafficAllocation();
+    int trafficAllocationOffset = bucketConfiguration.getTrafficAllocationOffset();
+    int[] bucketPercentages = bucketConfiguration.getBucketPercentages();
 
     if (targetString == null) {
       throw new ConfigurationException("Target string cannot be null");

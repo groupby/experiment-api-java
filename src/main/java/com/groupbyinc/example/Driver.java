@@ -13,7 +13,7 @@ public class Driver {
         String sessionId = args[1];
         BucketConfiguration bucketConfiguration = Mappers.readValue(
                 bucketConfigurationContents.getBytes(), BucketConfiguration.class, false);
-        int bucket = TrafficHashSplitter.getBucketFromString(sessionId, bucketConfiguration);
+        int bucket = new TrafficHashSplitter(bucketConfiguration).getBucketId(sessionId);
         System.out.println("Bucket: " + bucket);
     }
 }
