@@ -3,7 +3,7 @@ package com.groupbyinc.example;
 import com.groupbyinc.common.jackson.Mappers;
 import com.groupbyinc.experimentapi.bucketer.BucketConfiguration;
 import com.groupbyinc.experimentapi.bucketer.ConfigurationException;
-import com.groupbyinc.experimentapi.bucketer.TrafficHashSplitter;
+import com.groupbyinc.experimentapi.bucketer.Bucketer;
 
 import java.io.IOException;
 
@@ -13,7 +13,7 @@ public class Driver {
         String sessionId = args[1];
         BucketConfiguration bucketConfiguration = Mappers.readValue(
                 bucketConfigurationContents.getBytes(), BucketConfiguration.class, false);
-        int bucket = new TrafficHashSplitter(bucketConfiguration).getBucketId(sessionId);
+        int bucket = new Bucketer(bucketConfiguration).getBucketId(sessionId);
         System.out.println("Bucket: " + bucket);
     }
 }

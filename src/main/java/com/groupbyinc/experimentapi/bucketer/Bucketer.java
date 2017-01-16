@@ -3,7 +3,7 @@ package com.groupbyinc.experimentapi.bucketer;
 import com.sangupta.murmur.Murmur3;
 import org.apache.commons.lang3.StringUtils;
 
-public class TrafficHashSplitter {
+public class Bucketer {
 
   private BucketConfiguration bucketConfiguration = null;
   private static final long MURMUR_SEED = 2321168210L;
@@ -11,7 +11,7 @@ public class TrafficHashSplitter {
   private static final int NO_BUCKET = -1;
 
 
-  public TrafficHashSplitter(BucketConfiguration configuration) throws ConfigurationException {
+  public Bucketer(BucketConfiguration configuration) throws ConfigurationException {
     bucketConfiguration = configuration;
     init();
   }
@@ -71,11 +71,7 @@ public class TrafficHashSplitter {
     return NO_BUCKET;
   }
 
-  public BucketConfiguration getBucketConfiguration() {
-    return bucketConfiguration;
-  }
-
-  public final TrafficHashSplitter init() throws ConfigurationException {
+  public final Bucketer init() throws ConfigurationException {
     if (bucketConfiguration == null){
       throw new ConfigurationException("Bucket configuration can not be null");
     }
