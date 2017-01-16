@@ -101,7 +101,7 @@ public class TrafficHashSplitterTest {
   }
 
   @Test(expected = ConfigurationException.class)
-  public void testGetBucketWhenConfigurationNull() throws Exception {
+  public void testConstructorWhenConfigurationNull() throws Exception {
     new TrafficHashSplitter(null).getBucketId("testString");
   }
 
