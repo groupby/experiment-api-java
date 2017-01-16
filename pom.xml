@@ -143,15 +143,6 @@
 
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-resources-plugin</artifactId>
-          <version>2.7</version>
-          <configuration>
-            <encoding>${project.build.sourceEncoding}</encoding>
-          </configuration>
-        </plugin>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-assembly-plugin</artifactId>
           <version>2.6</version>
         </plugin>
@@ -488,6 +479,33 @@
           </execution>
         </executions>
       </plugin>
+
+      <plugin>
+        <groupId>com.google.code.maven-replacer-plugin</groupId>
+        <artifactId>replacer</artifactId>
+        <version>1.5.1</version>
+        <executions>
+          <execution>
+            <phase>deploy</phase>
+            <goals>
+              <goal>replace</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <includes>
+            <include>README.md</include>
+          </includes>
+          <replacements>
+            <replacement>
+              <token>(version(&gt;).*(&lt;))</token>
+              <value>version&gt;${project.version}&lt;</value>
+            </replacement>
+          </replacements>
+        </configuration>
+      </plugin>
+
+
 
     </plugins>
 

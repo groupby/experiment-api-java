@@ -26,7 +26,7 @@ The Uber JAR must be used to ensure shaded dependencies are included correctly.
 <dependency>
   <groupId>com.groupbyinc</groupId>
   <artifactId>experiment-api-java</artifactId>
-  <version>VERSION</version>
+  <version>1.0.1</version>
   <classifier>uber</classifier>
 </dependency>
 ```
