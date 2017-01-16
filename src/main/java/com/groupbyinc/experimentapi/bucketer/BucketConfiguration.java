@@ -5,7 +5,6 @@ import java.util.stream.IntStream;
 public class BucketConfiguration {
     private int[] bucketPercentages = null;
     private int trafficAllocation = -1;
-
     private int trafficAllocationOffset = -1;
 
     public BucketConfiguration() throws ConfigurationException{

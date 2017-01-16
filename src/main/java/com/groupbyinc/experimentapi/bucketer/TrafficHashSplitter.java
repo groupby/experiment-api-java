@@ -5,9 +5,16 @@ import org.apache.commons.lang3.StringUtils;
 
 public class TrafficHashSplitter {
 
+  private BucketConfiguration bucketConfiguration = null;
   private static final long MURMUR_SEED = 2321168210L;
   private static final long MAX_HASH_VALUE = (long) Math.floor(Math.pow(2, 32));
   private static final int NO_BUCKET = -1;
+
+
+  public TrafficHashSplitter(BucketConfiguration configuration) throws ConfigurationException {
+    bucketConfiguration = configuration;
+    init();
+  }
 
   public static int getBucketFromString(String targetString, BucketConfiguration configuration) throws ConfigurationException {
 
@@ -66,5 +73,16 @@ public class TrafficHashSplitter {
       }
     }
     return NO_BUCKET;
+  }
+
+  public BucketConfiguration getBucketConfiguration() {
+    return bucketConfiguration;
+  }
+
+  public final TrafficHashSplitter init() throws ConfigurationException {
+    if (bucketConfiguration == null){
+      throw new ConfigurationException("Bucket configuration can not be null");
+    }
+    return this;
   }
 }
