@@ -1,4 +1,4 @@
-package com.groupbyinc.hasher;
+package com.groupbyinc.experimentapi.bucketer;
 
 import com.sangupta.murmur.Murmur3;
 import org.apache.commons.lang3.StringUtils;

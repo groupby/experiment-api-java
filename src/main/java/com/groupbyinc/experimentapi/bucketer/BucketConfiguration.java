@@ -1,4 +1,4 @@
-package com.groupbyinc.hasher;
+package com.groupbyinc.experimentapi.bucketer;
 
 import java.util.stream.IntStream;
 

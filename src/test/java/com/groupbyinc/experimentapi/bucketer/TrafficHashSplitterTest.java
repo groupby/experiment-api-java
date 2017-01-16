@@ -1,14 +1,14 @@
-package com.groupbyinc.hasher;
+package com.groupbyinc.experimentapi.bucketer;
 
 import org.junit.Test;
 
 import java.io.File;
 import java.util.Scanner;
 
-import static com.groupbyinc.hasher.TrafficHashSplitter.generateBucketFractions;
-import static com.groupbyinc.hasher.TrafficHashSplitter.getBucketFromString;
-import static com.groupbyinc.hasher.TrafficHashSplitter.mapFractionsToThresholds;
-import static com.groupbyinc.hasher.TrafficHashSplitter.placeInBucket;
+import static com.groupbyinc.experimentapi.bucketer.TrafficHashSplitter.generateBucketFractions;
+import static com.groupbyinc.experimentapi.bucketer.TrafficHashSplitter.getBucketFromString;
+import static com.groupbyinc.experimentapi.bucketer.TrafficHashSplitter.mapFractionsToThresholds;
+import static com.groupbyinc.experimentapi.bucketer.TrafficHashSplitter.placeInBucket;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
