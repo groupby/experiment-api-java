@@ -1,23 +1,26 @@
-package com.groupbyinc.hasher;
+package com.groupbyinc.experimentapi.bucketer;
 
 import com.sangupta.murmur.Murmur3;
 import org.apache.commons.lang3.StringUtils;
 
-public class TrafficHashSplitter {
+public class Bucketer {
 
+  private BucketConfiguration bucketConfiguration = null;
   private static final long MURMUR_SEED = 2321168210L;
   private static final long MAX_HASH_VALUE = (long) Math.floor(Math.pow(2, 32));
   private static final int NO_BUCKET = -1;
 
-  public static int getBucketFromString(String targetString, BucketConfiguration configuration) throws ConfigurationException {
 
-    if (configuration == null) {
-      throw new ConfigurationException("Bucket configuration cannot be null");
-    }
+  public Bucketer(BucketConfiguration configuration) throws ConfigurationException {
+    bucketConfiguration = configuration;
+    init();
+  }
 
-    int trafficAllocation = configuration.getTrafficAllocation();
-    int trafficAllocationOffset = configuration.getTrafficAllocationOffset();
-    int[] bucketPercentages = configuration.getBucketPercentages();
+  public int getBucketId(String targetString) throws ConfigurationException {
+
+    int trafficAllocation = bucketConfiguration.getTrafficAllocation();
+    int trafficAllocationOffset = bucketConfiguration.getTrafficAllocationOffset();
+    int[] bucketPercentages = bucketConfiguration.getBucketPercentages();
 
     if (targetString == null) {
       throw new ConfigurationException("Target string cannot be null");
@@ -66,5 +69,12 @@ public class TrafficHashSplitter {
       }
     }
     return NO_BUCKET;
+  }
+
+  public final Bucketer init() throws ConfigurationException {
+    if (bucketConfiguration == null){
+      throw new ConfigurationException("Bucket configuration can not be null");
+    }
+    return this;
   }
 }
