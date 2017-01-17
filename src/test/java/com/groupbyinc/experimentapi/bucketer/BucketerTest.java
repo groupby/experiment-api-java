@@ -1,18 +1,17 @@
-package com.groupbyinc.hasher;
+package com.groupbyinc.experimentapi.bucketer;
 
 import org.junit.Test;
 
 import java.io.File;
 import java.util.Scanner;
 
-import static com.groupbyinc.hasher.TrafficHashSplitter.generateBucketFractions;
-import static com.groupbyinc.hasher.TrafficHashSplitter.getBucketFromString;
-import static com.groupbyinc.hasher.TrafficHashSplitter.mapFractionsToThresholds;
-import static com.groupbyinc.hasher.TrafficHashSplitter.placeInBucket;
+import static com.groupbyinc.experimentapi.bucketer.Bucketer.generateBucketFractions;
+import static com.groupbyinc.experimentapi.bucketer.Bucketer.mapFractionsToThresholds;
+import static com.groupbyinc.experimentapi.bucketer.Bucketer.placeInBucket;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
-public class TrafficHashSplitterTest {
+public class BucketerTest {
 
   private static final int TRAFFIC_ALLOCATION = 75;
   private static final int NO_OFFSET = 0;
@@ -26,10 +25,11 @@ public class TrafficHashSplitterTest {
         .split(",");
     int[] hashResults = new int[testStrings.length];
 
-    for (int ind = 0; ind < testStrings.length; ind++) {
-      BucketConfiguration configuration = new BucketConfiguration(BUCKET_PERCENTAGES, TRAFFIC_ALLOCATION, NO_OFFSET);
+    BucketConfiguration configuration = new BucketConfiguration(BUCKET_PERCENTAGES, TRAFFIC_ALLOCATION, NO_OFFSET);
+    Bucketer bucketer = new Bucketer(configuration);
 
-      hashResults[ind] = getBucketFromString(testStrings[ind], configuration);
+    for (int ind = 0; ind < testStrings.length; ind++) {
+      hashResults[ind] = bucketer.getBucketId(testStrings[ind]);
     }
 
     String[] expBucketsStr = new Scanner(new File("src/test/resources/expectedBuckets.csv")).nextLine()
@@ -49,10 +49,11 @@ public class TrafficHashSplitterTest {
         .split(",");
     int[] hashResults = new int[testStrings.length];
 
-    for (int ind = 0; ind < testStrings.length; ind++) {
-      BucketConfiguration configuration = new BucketConfiguration(BUCKET_PERCENTAGES, TRAFFIC_ALLOCATION, TRAFFIC_ALLOCATION_OFFSET);
+    BucketConfiguration configuration = new BucketConfiguration(BUCKET_PERCENTAGES, TRAFFIC_ALLOCATION, TRAFFIC_ALLOCATION_OFFSET);
+    Bucketer bucketer = new Bucketer(configuration);
 
-      hashResults[ind] = getBucketFromString(testStrings[ind], configuration);
+    for (int ind = 0; ind < testStrings.length; ind++) {
+      hashResults[ind] = bucketer.getBucketId(testStrings[ind]);
     }
 
     String[] expBucketsStr = new Scanner(new File("src/test/resources/expectedBuckets15Offset.csv")).nextLine()
@@ -100,26 +101,26 @@ public class TrafficHashSplitterTest {
   }
 
   @Test(expected = ConfigurationException.class)
-  public void testGetBucketWhenConfigurationNull() throws Exception {
-    getBucketFromString("testString", null);
+  public void testConstructorWhenConfigurationNull() throws Exception {
+    new Bucketer(null).getBucketId("testString");
   }
 
   @Test(expected = ConfigurationException.class)
   public void testGetBucketWhenTargetStringNull() throws Exception {
     BucketConfiguration configuration = new BucketConfiguration(BUCKET_PERCENTAGES, TRAFFIC_ALLOCATION, NO_OFFSET);
-    getBucketFromString(null, configuration);
+    new Bucketer(configuration).getBucketId(null);
   }
 
   @Test(expected = ConfigurationException.class)
   public void testGetBucketWhenTargetStringEmpty() throws Exception {
     BucketConfiguration configuration = new BucketConfiguration(BUCKET_PERCENTAGES, TRAFFIC_ALLOCATION, NO_OFFSET);
-    getBucketFromString("", configuration);
+    new Bucketer(configuration).getBucketId("");
   }
 
   @Test(expected = ConfigurationException.class)
   public void testGetBucketWhenTargetStringBlank() throws Exception {
     BucketConfiguration configuration = new BucketConfiguration(BUCKET_PERCENTAGES, TRAFFIC_ALLOCATION, NO_OFFSET);
-    getBucketFromString("   ", configuration);
+    new Bucketer(configuration).getBucketId("   ");
   }
 
   @Test

@@ -1,4 +1,4 @@
-package com.groupbyinc.hasher;
+package com.groupbyinc.experimentapi.bucketer;
 
 import com.groupbyinc.common.jackson.Mappers;
 import org.junit.Test;
