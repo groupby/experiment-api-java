@@ -38,5 +38,5 @@ The Uber JAR must be used to ensure shaded dependencies are included correctly.
 ```java
 BucketConfiguration configuration = new BucketConfiguration(new int[]{10, 30, 40, 20}, 50, 0);
 Bucketer bucketer = new Bucketer(configuration);
-int bucketId = bucketer.getBucketId("sessionId");   
+int bucketId = bucketer.getBucketId("sessionId string goes here");   
 ```
