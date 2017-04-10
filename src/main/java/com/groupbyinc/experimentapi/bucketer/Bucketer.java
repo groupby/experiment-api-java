@@ -10,6 +10,8 @@ public class Bucketer {
   private static final long MAX_HASH_VALUE = (long) Math.floor(Math.pow(2, 32));
   private static final int NO_BUCKET = -1;
 
+  private long[] bucketThresholds;
+
 
   public Bucketer(BucketConfiguration configuration) throws ConfigurationException {
     bucketConfiguration = configuration;
@@ -18,19 +20,11 @@ public class Bucketer {
 
   public int getBucketId(String targetString) throws ConfigurationException {
 
-    int trafficAllocation = bucketConfiguration.getTrafficAllocation();
-    int trafficAllocationOffset = bucketConfiguration.getTrafficAllocationOffset();
-    int[] bucketPercentages = bucketConfiguration.getBucketPercentages();
-
     if (targetString == null) {
       throw new ConfigurationException("Target string cannot be null");
     } else if (StringUtils.isBlank(targetString)) {
       throw new ConfigurationException("Target string cannot be empty or blank");
     }
-
-    double[] fractions = generateBucketFractions(bucketPercentages);
-
-    long[] bucketThresholds = mapFractionsToThresholds(trafficAllocation, trafficAllocationOffset, fractions);
 
     long stringHash = Murmur3.hash_x86_32(targetString.getBytes(), targetString.length(), MURMUR_SEED);
 
@@ -40,7 +34,7 @@ public class Bucketer {
   protected static long[] mapFractionsToThresholds(int trafficAllocation, int trafficAllocationOffset, double[] fractions) {
     long[] bucketMaxHashThresholds = new long[fractions.length + 1];
 
-    bucketMaxHashThresholds[0] = trafficAllocationOffset / 100;
+    bucketMaxHashThresholds[0] = trafficAllocationOffset * MAX_HASH_VALUE / 100;
     for (int index = 0; index < fractions.length; index++) {
       long threshold = (long) Math.floor((fractions[index] * trafficAllocation + trafficAllocationOffset) * MAX_HASH_VALUE / 100);
       bucketMaxHashThresholds[index + 1] = threshold;
@@ -75,6 +69,12 @@ public class Bucketer {
     if (bucketConfiguration == null){
       throw new ConfigurationException("Bucket configuration can not be null");
     }
+    int trafficAllocation = bucketConfiguration.getTrafficAllocation();
+    int trafficAllocationOffset = bucketConfiguration.getTrafficAllocationOffset();
+    int[] bucketPercentages = bucketConfiguration.getBucketPercentages();
+    double[] fractions = generateBucketFractions(bucketPercentages);
+    bucketThresholds = mapFractionsToThresholds(trafficAllocation, trafficAllocationOffset, fractions);
+
     return this;
   }
 }
