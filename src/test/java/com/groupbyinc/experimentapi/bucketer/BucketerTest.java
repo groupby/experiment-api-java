@@ -42,7 +42,6 @@ public class BucketerTest {
     assertArrayEquals(expectedBuckets, hashResults);
   }
 
-
   @Test
   public void testHashReturnsExpectedBuckets15Offset() throws Exception {
 
