@@ -1,7 +1,7 @@
 package com.groupbyinc.experimentapi.bucketer;
 
+import com.groupbyinc.util.StringUtils;
 import com.sangupta.murmur.Murmur3;
-import org.apache.commons.lang3.StringUtils;
 
 public class Bucketer {
 
@@ -18,7 +18,6 @@ public class Bucketer {
   }
 
   public int getBucketId(String targetString) throws ConfigurationException {
-
     if (targetString == null) {
       throw new ConfigurationException("Target string cannot be null");
     } else if (StringUtils.isBlank(targetString)) {
@@ -26,7 +25,6 @@ public class Bucketer {
     }
 
     long stringHash = Murmur3.hash_x86_32(targetString.getBytes(), targetString.length(), MURMUR_SEED);
-
     return placeInBucket(stringHash, bucketThresholds);
   }
 
