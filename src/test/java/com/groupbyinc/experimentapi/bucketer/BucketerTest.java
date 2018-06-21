@@ -20,9 +20,7 @@ public class BucketerTest {
 
   @Test
   public void testHashReturnsExpectedBucketsNoOffset() throws Exception {
-
-    String[] testStrings = new Scanner(new File("src/test/resources/testStrings.csv")).nextLine()
-        .split(",");
+    String[] testStrings = new Scanner(new File("src/test/resources/testStrings.csv")).nextLine().split(",");
     int[] hashResults = new int[testStrings.length];
 
     BucketConfiguration configuration = new BucketConfiguration(BUCKET_PERCENTAGES, TRAFFIC_ALLOCATION, NO_OFFSET);
@@ -32,8 +30,7 @@ public class BucketerTest {
       hashResults[ind] = bucketer.getBucketId(testStrings[ind]);
     }
 
-    String[] expBucketsStr = new Scanner(new File("src/test/resources/expectedBuckets.csv")).nextLine()
-        .split(",");
+    String[] expBucketsStr = new Scanner(new File("src/test/resources/expectedBuckets.csv")).nextLine().split(",");
     int[] expectedBuckets = new int[expBucketsStr.length];
 
     for (int ind = 0; ind < testStrings.length; ind++) {
@@ -44,9 +41,7 @@ public class BucketerTest {
 
   @Test
   public void testHashReturnsExpectedBuckets15Offset() throws Exception {
-
-    String[] testStrings = new Scanner(new File("src/test/resources/testStrings.csv")).nextLine()
-        .split(",");
+    String[] testStrings = new Scanner(new File("src/test/resources/testStrings.csv")).nextLine().split(",");
     int[] hashResults = new int[testStrings.length];
 
     BucketConfiguration configuration = new BucketConfiguration(BUCKET_PERCENTAGES, TRAFFIC_ALLOCATION, TRAFFIC_ALLOCATION_OFFSET);
@@ -56,8 +51,7 @@ public class BucketerTest {
       hashResults[ind] = bucketer.getBucketId(testStrings[ind]);
     }
 
-    String[] expBucketsStr = new Scanner(new File("src/test/resources/expectedBuckets15Offset.csv")).nextLine()
-        .split(",");
+    String[] expBucketsStr = new Scanner(new File("src/test/resources/expectedBuckets15Offset.csv")).nextLine().split(",");
     int[] expectedBuckets = new int[expBucketsStr.length];
 
     for (int ind = 0; ind < testStrings.length; ind++) {

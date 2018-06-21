@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>com.groupbyinc</groupId>
     <artifactId>parent-oss</artifactId>
     <version>8</version>
-    <relativePath />
+    <relativePath/>
   </parent>
 
   <artifactId>experiment-api-java</artifactId>
@@ -31,7 +32,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.build.locale>en_US</project.build.locale>
     <repo.upload.retryAttempts>3</repo.upload.retryAttempts>
-    <log4j.properties />
+    <log4j.properties/>
 
     <!-- ### Versions -->
     <junit.version>4.12</junit.version>
@@ -52,16 +53,6 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-      <version>19.0</version>
-    </dependency>
-    <dependency>
-      <groupId>com.groupbyinc</groupId>
-      <artifactId>common-jackson</artifactId>
-      <version>${groupbyinc.common.version}</version>
-    </dependency>
-    <dependency>
       <groupId>com.sangupta</groupId>
       <artifactId>murmur</artifactId>
       <version>1.0.0</version>
@@ -73,6 +64,12 @@
     </dependency>
 
     <!-- ### Test -->
+    <dependency>
+      <groupId>com.groupbyinc</groupId>
+      <artifactId>common-jackson</artifactId>
+      <version>${groupbyinc.common.version}</version>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -157,7 +154,7 @@
               <manifest>
                 <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                 <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-                <packageName />
+                <packageName/>
               </manifest>
               <manifestEntries>
                 <Jdk-Compatibility-Version>${project.build.jdkVersion}</Jdk-Compatibility-Version>
@@ -263,13 +260,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <archive>
-            <manifest>
-              <mainClass>com.groupbyinc.example.Driver</mainClass>
-            </manifest>
-          </archive>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -504,7 +494,6 @@
           </replacements>
         </configuration>
       </plugin>
-
 
 
     </plugins>

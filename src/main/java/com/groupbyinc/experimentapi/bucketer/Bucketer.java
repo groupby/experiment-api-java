@@ -5,13 +5,12 @@ import org.apache.commons.lang3.StringUtils;
 
 public class Bucketer {
 
-  private BucketConfiguration bucketConfiguration = null;
+  private BucketConfiguration bucketConfiguration;
   private static final long MURMUR_SEED = 2321168210L;
   private static final long MAX_HASH_VALUE = (long) Math.floor(Math.pow(2, 32));
   private static final int NO_BUCKET = -1;
 
   private long[] bucketThresholds;
-
 
   public Bucketer(BucketConfiguration configuration) throws ConfigurationException {
     bucketConfiguration = configuration;
@@ -66,9 +65,10 @@ public class Bucketer {
   }
 
   public final Bucketer init() throws ConfigurationException {
-    if (bucketConfiguration == null){
+    if (bucketConfiguration == null) {
       throw new ConfigurationException("Bucket configuration can not be null");
     }
+
     int trafficAllocation = bucketConfiguration.getTrafficAllocation();
     int trafficAllocationOffset = bucketConfiguration.getTrafficAllocationOffset();
     int[] bucketPercentages = bucketConfiguration.getBucketPercentages();
