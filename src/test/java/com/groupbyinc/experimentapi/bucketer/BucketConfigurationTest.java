@@ -1,7 +1,11 @@
 package com.groupbyinc.experimentapi.bucketer;
 
-import com.groupbyinc.common.jackson.Mappers;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
+
+import java.io.IOException;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -53,25 +57,28 @@ public class BucketConfigurationTest {
     new BucketConfiguration(BUCKET_PERCENTAGES, 50, -1);
   }
 
+  private BucketConfiguration getBucketConfiguration(String s) throws IOException {
+    return new ObjectMapper(new JsonFactory().enable(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES).enable(JsonParser.Feature.ALLOW_SINGLE_QUOTES)).readValue(s.getBytes(), BucketConfiguration.class);
+  }
+
   @Test(expected = ConfigurationException.class)
   public void testGenerateFromJsonWithBucketsOver100() throws Exception {
-    Mappers.readValue("{\"bucketPercentages\": [30,20,30,40], \"trafficAllocation\" : 45}".getBytes(), BucketConfiguration.class, false).init();
+    getBucketConfiguration("{'bucketPercentages': [30,20,30,40], 'trafficAllocation' : 45}").init();
   }
 
   @Test(expected = ConfigurationException.class)
   public void testGenerateFromJsonWithAllocationNull() throws Exception {
-    Mappers.readValue("{\"bucketPercentages\": [10,20,30,40]}".getBytes(), BucketConfiguration.class, false).init();
+    getBucketConfiguration("{'bucketPercentages': [10,20,30,40]}").init();
   }
 
   @Test(expected = ConfigurationException.class)
   public void testGenerateFromJsonWithOffsetNull() throws Exception {
-    Mappers.readValue("{\"bucketPercentages\": [10,20,30,40], \"trafficAllocation\" : 45}".getBytes(), BucketConfiguration.class, false).init();
+    getBucketConfiguration("{'bucketPercentages': [10,20,30,40], 'trafficAllocation' : 45}").init();
   }
 
   @Test
   public void testGenerateConfigFromJson() throws Exception {
-    BucketConfiguration configuration =
-        Mappers.readValue("{\"trafficAllocationOffset\": 2, \"bucketPercentages\": [10,20,30,40], \"trafficAllocation\" : 45}".getBytes(), BucketConfiguration.class, false).init();
+    BucketConfiguration configuration = getBucketConfiguration("{'trafficAllocationOffset': 2, 'bucketPercentages': [10,20,30,40], 'trafficAllocation' : 45}").init();
     assertArrayEquals(new int[]{10, 20, 30, 40}, configuration.getBucketPercentages());
     assertEquals(45, configuration.getTrafficAllocation());
     assertEquals(2, configuration.getTrafficAllocationOffset());
