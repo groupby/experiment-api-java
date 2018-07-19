@@ -48,7 +48,7 @@
     <test.unit.skipTests>false</test.unit.skipTests>
 
     <!-- ### GroupBy Dependency Params -->
-    <groupbyinc.common.version>130-SNAPSHOT</groupbyinc.common.version>
+    <groupbyinc.common.version>154-SNAPSHOT</groupbyinc.common.version>
   </properties>
 
   <dependencies>
