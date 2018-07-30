@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>com.groupbyinc</groupId>
     <artifactId>parent-oss</artifactId>
     <version>8</version>
-    <relativePath />
+    <relativePath/>
   </parent>
 
   <artifactId>experiment-api-java</artifactId>
@@ -31,13 +32,22 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.build.locale>en_US</project.build.locale>
     <repo.upload.retryAttempts>3</repo.upload.retryAttempts>
-    <log4j.properties />
+    <log4j.properties/>
 
     <!-- ### Versions -->
     <junit.version>4.12</junit.version>
     <jackson.version>2.9.6</jackson.version>
 
     <!-- ### Test -->
+    <argLine>
+      -Xmx1024m
+      -Xms256m
+      -XX:+CMSClassUnloadingEnabled
+      -Dlog4j.properties=${log4j.properties}
+      -Dfile.encoding=${project.build.sourceEncoding}
+      -Dslow=${test.slow}
+      -DthreadLocal=${test.threadLocal}
+    </argLine>
     <test.runOrder>random</test.runOrder>
     <test.forkCount>1C</test.forkCount>
     <test.reuseForks>true</test.reuseForks>
@@ -155,7 +165,7 @@
               <manifest>
                 <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                 <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-                <packageName />
+                <packageName/>
               </manifest>
               <manifestEntries>
                 <Jdk-Compatibility-Version>${project.build.jdkVersion}</Jdk-Compatibility-Version>
@@ -252,6 +262,18 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-shade-plugin</artifactId>
           <version>3.1.1</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.jacoco</groupId>
+          <artifactId>jacoco-maven-plugin</artifactId>
+          <version>0.8.1</version>
+        </plugin>
+
+        <plugin>
+          <groupId>com.gavinmogan</groupId>
+          <artifactId>codacy-maven-plugin</artifactId>
+          <version>1.0.3</version>
         </plugin>
       </plugins>
 
@@ -353,17 +375,6 @@
           <reuseForks>${test.reuseForks}</reuseForks>
           <threadCount>${test.threadCount}</threadCount>
           <parallel>${test.parallel}</parallel>
-          <argLine>
-            -Xmx1024m
-            -Xms256m
-            -XX:+CMSClassUnloadingEnabled
-            -Dlog4j.properties=${log4j.properties}
-            -Dfile.encoding=${project.build.sourceEncoding}
-            -DskipTests=${test.unit.skipTests}
-            -Dmaven.test.skip=${test.unit.skipTests}
-            -Dslow=${test.slow}
-            -DthreadLocal=${test.threadLocal}
-          </argLine>
         </configuration>
       </plugin>
 
@@ -549,6 +560,74 @@
     </profile>
 
     <profile>
+      <id>coverage</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>default-prepare-agent</id>
+                <goals>
+                  <goal>prepare-agent</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>default-report</id>
+                <phase>prepare-package</phase>
+                <goals>
+                  <goal>report</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>default-check</id>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+                <configuration>
+                  <rules>
+                    <!--  implementation is needed only for Maven 2  -->
+                    <rule implementation="org.jacoco.maven.RuleConfiguration">
+                      <element>BUNDLE</element>
+                      <limits>
+                        <!--  implementation is needed only for Maven 2  -->
+                        <limit implementation="org.jacoco.report.check.Limit">
+                          <counter>COMPLEXITY</counter>
+                          <value>COVEREDRATIO</value>
+                          <minimum>0.60</minimum>
+                        </limit>
+                      </limits>
+                    </rule>
+                  </rules>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>com.gavinmogan</groupId>
+            <artifactId>codacy-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>test-coverage</id>
+                <phase>install</phase>
+                <goals>
+                  <goal>coverage</goal>
+                </goals>
+                <configuration>
+                  <apiToken>${env.CODACY_API_TOKEN}</apiToken>
+                  <projectToken>db98e5dd1f0a4d129223202813b5e5c2</projectToken>
+                  <coverageReportFile>target/site/jacoco/jacoco.xml</coverageReportFile>
+                  <codacyApiBaseUrl>https://api.codacy.com</codacyApiBaseUrl>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
       <id>attach-and-sign</id>
       <build>
         <plugins>
@@ -581,7 +660,6 @@
                   <detectJavaApiLink>false</detectJavaApiLink>
                   <detectLinks>false</detectLinks>
                   <validateLinks>false</validateLinks>
-                  <additionalparam>-Xdoclint:none</additionalparam>
                   <quiet>true</quiet>
                   <keywords>true</keywords>
                 </configuration>
