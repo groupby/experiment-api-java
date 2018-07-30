@@ -1,0 +1,68 @@
+version: 2
+
+defaults: &defaults
+  docker:
+  - image: groupbyinc/circleci-java
+
+main_branch_only: &main_branch_only
+  filters:
+    branches:
+      only:
+        - develop
+
+# common tasks
+dependency_cache_key: &dependency_cache_key
+  run:
+    name: Generate Dependency Cache Key
+    command: /scripts/checksum.sh /tmp/checksum
+
+restore_cache: &restore_cache
+  restore_cache:
+    key: v1-dependencies-{{checksum "/tmp/checksum"}}
+
+setup_builder: &setup_builder
+  run:
+    name: Initialize Build Agent
+    command: /scripts/setup.sh
+
+jobs:
+  build:
+    <<: *defaults
+    steps:
+    - checkout
+    - *dependency_cache_key
+    - *restore_cache
+    - *setup_builder
+    - run: mvn -B -Pcoverage
+    - run: mvn -B dependency:go-offline
+    - save_cache:
+        key: v1-dependencies-{{checksum "/tmp/checksum"}}
+        paths:
+        - ~/.m2
+  release:
+    <<: *defaults
+    steps:
+    - checkout
+    - *dependency_cache_key
+    - *restore_cache
+    - *setup_builder
+    - run: mvn -B versions:update-parent -T10 -Pcreate-release
+    - run: git commit -am "updated parent version" || true
+    - run: mvn -B release:prepare release:perform -Pcreate-release
+
+workflows:
+  version: 2
+  build-and-push:
+    jobs:
+    - build:
+        context: org-global
+    - hold:
+        <<: *main_branch_only
+        type: approval
+        requires:
+        - build
+    - release:
+        <<: *main_branch_only
+        context: org-global
+        requires:
+        - hold
