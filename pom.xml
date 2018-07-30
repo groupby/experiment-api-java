@@ -616,7 +616,7 @@
                 </goals>
                 <configuration>
                   <apiToken>${env.CODACY_API_TOKEN}</apiToken>
-                  <projectToken>db98e5dd1f0a4d129223202813b5e5c2</projectToken>
+                  <projectToken>92b63890601b492d9b8ce78e3c933059</projectToken>
                   <coverageReportFile>target/site/jacoco/jacoco.xml</coverageReportFile>
                   <codacyApiBaseUrl>https://api.codacy.com</codacyApiBaseUrl>
                 </configuration>
