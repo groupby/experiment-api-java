@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>com.groupbyinc</groupId>
     <artifactId>parent-oss</artifactId>
-    <version>12</version>
-    <relativePath />
+    <version>14</version>
   </parent>
 
   <artifactId>experiment-api-java</artifactId>
@@ -25,7 +25,7 @@
   </scm>
 
   <properties>
-    <github.release.artifact>${project.build.directory}/${project.artifactId}-${project.version}-uber.jar</github.release.artifact>
+    <github.release.artifact>${github.release.uber.artifact}</github.release.artifact>
     <codacy.project.token>92b63890601b492d9b8ce78e3c933059</codacy.project.token>
     <repo.upload.retryAttempts>3</repo.upload.retryAttempts>
 
@@ -39,7 +39,7 @@
     <test.threadCount>4</test.threadCount>
     <test.parallel>classesAndMethods</test.parallel>
     <argLine>
-      -Xmx1024m
+      -Xmx512m
       -Xms256m
       -XX:+CMSClassUnloadingEnabled
       -Dfile.encoding=${project.build.sourceEncoding}
@@ -82,33 +82,8 @@
     <plugins>
 
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-install-plugin</artifactId>
-      </plugin>
-
-      <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-failsafe-plugin</artifactId>
       </plugin>
 
       <plugin>
@@ -162,12 +137,9 @@
                   <artifact>*:*</artifact>
                   <!-- excludes for preventing OSGi bundles from complaining -->
                   <excludes>
-                    <exclude>com/groupbyinc/common/apache/commons/logging/impl/Avalon*
-                    </exclude>
-                    <exclude>com/groupbyinc/common/apache/commons/logging/impl/LogKit*
-                    </exclude>
-                    <exclude>com/groupbyinc/common/apache/commons/logging/impl/Log4J*
-                    </exclude>
+                    <exclude>com/groupbyinc/common/apache/commons/logging/impl/Avalon*</exclude>
+                    <exclude>com/groupbyinc/common/apache/commons/logging/impl/LogKit*</exclude>
+                    <exclude>com/groupbyinc/common/apache/commons/logging/impl/Log4J*</exclude>
                   </excludes>
                 </filter>
                 <filter>
