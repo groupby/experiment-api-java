@@ -33,7 +33,7 @@ jobs:
     - *dependency_cache_key
     - *restore_cache
     - *setup_builder
-    - run: mvn -B -Pcoverage
+    - run: mvn -B -Pall,coverage
     - run: mvn -B dependency:go-offline
     - save_cache:
         key: v1-dependencies-{{checksum "/tmp/checksum"}}
