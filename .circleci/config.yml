@@ -46,9 +46,9 @@ jobs:
     - *dependency_cache_key
     - *restore_cache
     - *setup_builder
-    - run: mvn -B versions:update-parent -T10 -Pcreate-release
+    - run: mvn -B versions:update-parent -T10
     - run: git commit -am "updated parent version" || true
-    - run: mvn -B release:prepare release:perform -Pcreate-release
+    - run: mvn -B release:prepare release:perform
 
 workflows:
   version: 2
