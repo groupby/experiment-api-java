@@ -25,6 +25,7 @@
   </scm>
 
   <properties>
+    <github.release.artifact>${project.build.directory}/${project.artifactId}-${project.version}-uber.jar</github.release.artifact>
     <codacy.project.token>92b63890601b492d9b8ce78e3c933059</codacy.project.token>
     <repo.upload.retryAttempts>3</repo.upload.retryAttempts>
 
