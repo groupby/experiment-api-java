@@ -9,7 +9,7 @@
   </parent>
 
   <artifactId>experiment-api-java</artifactId>
-  <version>1.0.16</version>
+  <version>1.0.17-SNAPSHOT</version>
 
   <packaging>jar</packaging>
 
@@ -20,7 +20,7 @@
     <url>https://github.com/groupby/experiment-api-java</url>
     <connection>scm:git:git@github.com:groupby/experiment-api-java.git</connection>
     <developerConnection>scm:git:git@github.com:groupby/experiment-api-java.git</developerConnection>
-    <tag>v1.0.16</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <properties>
