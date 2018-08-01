@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>com.groupbyinc</groupId>
     <artifactId>parent-oss</artifactId>
     <version>8</version>
-    <relativePath />
+    <relativePath/>
   </parent>
 
   <artifactId>experiment-api-java</artifactId>
@@ -31,13 +32,21 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.build.locale>en_US</project.build.locale>
     <repo.upload.retryAttempts>3</repo.upload.retryAttempts>
-    <log4j.properties />
+    <log4j.properties/>
 
     <!-- ### Versions -->
     <junit.version>4.12</junit.version>
     <jackson.version>2.9.6</jackson.version>
 
     <!-- ### Test -->
+    <test.runOrder>random</test.runOrder>
+    <test.forkCount>1C</test.forkCount>
+    <test.reuseForks>true</test.reuseForks>
+    <test.slow>false</test.slow>
+    <test.threadLocal>true</test.threadLocal>
+    <test.threadCount>4</test.threadCount>
+    <test.parallel>classesAndMethods</test.parallel>
+    <test.unit.skipTests>false</test.unit.skipTests>
     <argLine>
       -Xmx1024m
       -Xms256m
@@ -47,17 +56,6 @@
       -Dslow=${test.slow}
       -DthreadLocal=${test.threadLocal}
     </argLine>
-    <test.runOrder>random</test.runOrder>
-    <test.forkCount>1C</test.forkCount>
-    <test.reuseForks>true</test.reuseForks>
-    <test.slow>false</test.slow>
-    <test.threadLocal>true</test.threadLocal>
-    <test.threadCount>4</test.threadCount>
-    <test.parallel>classesAndMethods</test.parallel>
-    <test.unit.skipTests>false</test.unit.skipTests>
-
-    <!-- ### GroupBy Dependency Params -->
-    <groupbyinc.common.version>130-SNAPSHOT</groupbyinc.common.version>
   </properties>
 
   <dependencies>
@@ -173,7 +171,7 @@
               <manifest>
                 <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                 <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-                <packageName />
+                <packageName/>
               </manifest>
               <manifestEntries>
                 <Jdk-Compatibility-Version>${project.build.jdkVersion}</Jdk-Compatibility-Version>
