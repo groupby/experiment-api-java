@@ -8,7 +8,7 @@ main_branch_only: &main_branch_only
   filters:
     branches:
       only:
-        - master
+        - develop
 
 # common tasks
 dependency_cache_key: &dependency_cache_key
