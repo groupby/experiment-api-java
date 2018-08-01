@@ -34,6 +34,7 @@
     <jackson.version>2.9.6</jackson.version>
 
     <!-- ### Test -->
+    <test.coverage.ratio>0</test.coverage.ratio>
     <test.threadLocal>true</test.threadLocal>
     <test.threadCount>4</test.threadCount>
     <test.parallel>classesAndMethods</test.parallel>
