@@ -37,13 +37,6 @@
     <test.threadLocal>true</test.threadLocal>
     <test.threadCount>4</test.threadCount>
     <test.parallel>classesAndMethods</test.parallel>
-    <argLine>
-      -Xmx512m
-      -Xms256m
-      -XX:+CMSClassUnloadingEnabled
-      -Dfile.encoding=${project.build.sourceEncoding}
-      -DthreadLocal=${test.threadLocal}
-    </argLine>
   </properties>
 
   <dependencies>

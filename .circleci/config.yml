@@ -16,9 +16,8 @@ dependency_cache_key: &dependency_cache_key
     name: Generate Dependency Cache Key
     command: /scripts/checksum.sh /tmp/checksum
 
-restore_cache: &restore_cache
-  restore_cache:
-    key: v1-dependencies-{{checksum "/tmp/checksum"}}
+cache_key: &cache_key
+  key: v1-dependencies-{{checksum "/tmp/checksum"}}
 
 setup_builder: &setup_builder
   run:
@@ -31,12 +30,12 @@ jobs:
     steps:
     - checkout
     - *dependency_cache_key
-    - *restore_cache
+    - restore_cache: *cache_key
     - *setup_builder
     - run: mvn -B -Pall,coverage
     - run: mvn -B dependency:go-offline
     - save_cache:
-        key: v1-dependencies-{{checksum "/tmp/checksum"}}
+        <<: *cache_key
         paths:
         - ~/.m2
   release:
@@ -44,7 +43,7 @@ jobs:
     steps:
     - checkout
     - *dependency_cache_key
-    - *restore_cache
+    - restore_cache: *cache_key
     - *setup_builder
     - run: mvn -B versions:update-parent -T10
     - run: git commit -am "updated parent version" || true
