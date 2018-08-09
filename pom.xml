@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -93,18 +94,16 @@
               <goal>shade</goal>
             </goals>
             <configuration>
+              <artifactSet>
+                <includes>
+                  <include>com.groupbyinc:*</include>
+                  <include>com.sangupta*</include>
+                </includes>
+              </artifactSet>
               <relocations>
                 <relocation>
-                  <pattern>com.google</pattern>
-                  <shadedPattern>com.groupbyinc</shadedPattern>
-                </relocation>
-                <relocation>
                   <pattern>com.sangupta</pattern>
-                  <shadedPattern>com.groupbyinc</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>org.apache</pattern>
-                  <shadedPattern>com.groupbyinc</shadedPattern>
+                  <shadedPattern>com.groupbyinc.common.sangupta</shadedPattern>
                 </relocation>
               </relocations>
               <shadeTestJar>true</shadeTestJar>
@@ -112,18 +111,7 @@
               <shadedClassifierName>uber</shadedClassifierName>
               <createSourcesJar>true</createSourcesJar>
               <createDependencyReducedPom>true</createDependencyReducedPom>
-              <dependencyReducedPomLocation>
-                ${project.build.directory}/${project.build.finalName}.pom
-              </dependencyReducedPomLocation>
-              <artifactSet>
-                <includes>
-                  <include>${project.groupId}:*</include>
-                  <include>com.google.guava:*</include>
-                  <include>com.sangupta:*</include>
-                  <include>com.groupbyinc</include>
-                  <include>org.apache.commons:*</include>
-                </includes>
-              </artifactSet>
+              <dependencyReducedPomLocation>${project.build.directory}/${project.build.finalName}.pom</dependencyReducedPomLocation>
               <filters>
                 <filter>
                   <artifact>*:*</artifact>
