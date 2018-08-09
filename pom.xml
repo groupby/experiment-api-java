@@ -6,7 +6,7 @@
   <parent>
     <groupId>com.groupbyinc</groupId>
     <artifactId>parent-oss</artifactId>
-    <version>18</version>
+    <version>32</version>
   </parent>
 
   <artifactId>experiment-api-java</artifactId>
