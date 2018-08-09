@@ -24,6 +24,16 @@ setup_builder: &setup_builder
     name: Initialize Build Agent
     command: /scripts/setup.sh
 
+process_test_metadata: &process_test_metadata
+  run:
+    name: Process Test Metadata
+    command: /scripts/process-test-results.sh
+    when: always
+
+store_test_results: &store_test_results
+  store_test_results:
+    path: ~/junit
+
 jobs:
   build:
     <<: *defaults
@@ -33,6 +43,8 @@ jobs:
     - restore_cache: *cache_key
     - *setup_builder
     - run: mvn -B -Pall,coverage
+    - *process_test_metadata
+    - *store_test_results
     - run: mvn -B dependency:go-offline
     - save_cache:
         <<: *cache_key
