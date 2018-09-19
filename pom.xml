@@ -30,7 +30,7 @@
 
     <!-- ### Versions -->
     <junit.version>4.12</junit.version>
-    <jackson.version>2.9.6</jackson.version>
+    <jackson.version>2.9.7</jackson.version>
 
     <!-- ### Test -->
     <test.coverage.ratio>0</test.coverage.ratio>
